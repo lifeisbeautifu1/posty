@@ -1,30 +1,49 @@
 const { StatusCodes } = require('http-status-codes');
-const { BadRequestError, NotFoundError } = require('../errors');
+const {
+  BadRequestError,
+  NotFoundError,
+  UnauthorizedError,
+} = require('../errors');
 const Goals = require('../models/goals');
 
 const getGoals = async (req, res) => {
-  const goals = await Goals.find();
+  const goals = await Goals.find({ createdBy: req.user.id });
   res.status(StatusCodes.OK).json({ count: goals.length, goals });
 };
 
 const createGoal = async (req, res) => {
   if (!req.body.text) throw new BadRequestError('Please provide text field!');
-  const newGoal = await Goals.create(req.body);
-  res.status(StatusCodes.CREATED).json({ msg: 'success!', newGoal });
+  const goal = await Goals.create({
+    text: req.body.text,
+    createdBy: req.user.id,
+  });
+  res.status(StatusCodes.CREATED).json({ goal });
 };
 
 const updateGoal = async (req, res) => {
   if (!req.body.text) throw new BadRequestError('Please provide text field!');
-  const updatedGoal = await Goals.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
+
+  let goal = await Goals.findOne({
+    _id: req.params.id,
   });
-  if (!updatedGoal) throw new NotFoundError(`cant find goal`);
-  res.status(StatusCodes.OK).json({ updatedGoal });
+  if (!goal)
+    throw new NotFoundError(`goal with id ${req.params.id} doesnt exist`);
+  if (goal.createdBy.toString() !== req.user.id)
+    throw new NotFoundError(`goal with id ${req.params.id} doesnt exist`);
+  goal = await Goals.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+  res.status(StatusCodes.OK).json({ goal });
 };
 
 const deleteGoal = async (req, res) => {
-  const goal = await Goals.findByIdAndDelete(req.params.id);
-  if (!goal) throw new NotFoundError('cant find goal');
+  const goal = await Goals.findOneAndDelete({
+    createdBy: req.user.id,
+    _id: req.params.id,
+  });
+  if (!goal)
+    throw new NotFoundError(`goal with id ${req.params.id} doesnt exist`);
   res.status(StatusCodes.OK).json({ id: req.params.id });
 };
 

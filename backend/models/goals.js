@@ -6,6 +6,11 @@ const GoalsSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Please provide text field'],
     },
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: [true, 'Please provide user'],
+      ref: 'Users',
+    },
   },
   {
     timestamps: true,
