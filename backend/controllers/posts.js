@@ -7,7 +7,12 @@ const {
 const Posts = require('../models/posts');
 
 const getPosts = async (req, res) => {
-  const posts = await Posts.find({ createdBy: req.user.id });
+  const posts = await Posts.find({ createdBy: req.user.id }).sort('-createdAt');
+  res.status(StatusCodes.OK).json(posts);
+};
+
+const getAllPosts = async (req, res) => {
+  const posts = await Posts.find().sort('-createdAt');
   res.status(StatusCodes.OK).json(posts);
 };
 
@@ -15,6 +20,7 @@ const createPost = async (req, res) => {
   if (!req.body.text) throw new BadRequestError('Please provide text field!');
   const post = await Posts.create({
     text: req.body.text,
+    author: req.user.name,
     createdBy: req.user.id,
   });
   res.status(StatusCodes.CREATED).json(post);
@@ -22,7 +28,6 @@ const createPost = async (req, res) => {
 
 const updatePost = async (req, res) => {
   if (!req.body.text) throw new BadRequestError('Please provide text field!');
-
   let post = await Posts.findOne({
     _id: req.params.id,
   });
@@ -49,6 +54,7 @@ const deletePost = async (req, res) => {
 
 module.exports = {
   getPosts,
+  getAllPosts,
   updatePost,
   deletePost,
   createPost,

@@ -6,6 +6,10 @@ const PostsSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Please provide text field'],
     },
+    author: {
+      type: String,
+      required: [true, 'Please provide author of the post'],
+    },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       required: [true, 'Please provide user'],

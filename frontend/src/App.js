@@ -2,7 +2,8 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Dashboard from './pages/Dashboard';
+import MyPosts from './pages/MyPosts';
+import AllPosts from './pages/AllPosts';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Navbar from './components/Navbar';
@@ -12,7 +13,10 @@ const App = () => {
       <Navbar />
       <div className="container">
         <Routes>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/">
+            <Route index element={<MyPosts />} />
+            <Route path="all" element={<AllPosts />} />
+          </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Routes>
@@ -21,5 +25,7 @@ const App = () => {
     </BrowserRouter>
   );
 };
+
+
 
 export default App;

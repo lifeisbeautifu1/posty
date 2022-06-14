@@ -4,12 +4,15 @@ const posts = express.Router();
 
 const {
   getPosts,
+  getAllPosts,
   updatePost,
   createPost,
   deletePost,
 } = require('../controllers/posts');
 
 posts.get('/', getPosts);
+
+posts.get('/all', getAllPosts);
 
 posts.post('/', createPost);
 

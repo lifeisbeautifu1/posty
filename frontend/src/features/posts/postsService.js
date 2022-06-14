@@ -26,6 +26,16 @@ const deletePost = async (id, token) => {
   return res.data;
 };
 
+const editPost = async (postData, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const res = await axios.patch(API_URL + postData.id, postData, config);
+  return res.data;
+};
+
 const getMyPosts = async (token) => {
   const config = {
     headers: {
@@ -34,15 +44,28 @@ const getMyPosts = async (token) => {
   };
 
   const res = await axios.get(API_URL, config);
-  console.log(res.data);
 
+  return res.data;
+};
+
+const getAllPosts = async (token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const res = await axios.get(API_URL + 'all', config);
+  console.log(res.data);
   return res.data;
 };
 
 const postsService = {
   getMyPosts,
+  getAllPosts,
   deletePost,
   createPost,
+  editPost,
 };
 
 export default postsService;

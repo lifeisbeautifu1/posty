@@ -5,8 +5,9 @@ import Spinner from '../components/Spinner';
 import PostsForm from '../components/PostsForm';
 import PostItem from '../components/PostItem';
 import { getMyPosts, reset } from '../features/posts/postsSlice';
+import Sidebar from '../components/Sidebar';
 
-const Dashboard = () => {
+const MyPosts = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
@@ -27,20 +28,23 @@ const Dashboard = () => {
     return <Spinner />;
   }
   return (
-    <>
-      <section className="heading">
-        <h3>Your posts</h3>
-      </section>
-      <PostsForm />
-      <section className="content">
-        {posts.length > 0 ? (
-          posts.map((post) => <PostItem key={post._id} {...post} />)
-        ) : (
-          <h3>You posts feed is empty</h3>
-        )}
-      </section>
-    </>
+    <div className="grid">
+      <Sidebar />
+      <article className="posts-wrapper">
+        <section className="heading">
+          <h3>Your posts</h3>
+        </section>
+        <PostsForm />
+        <section className="content">
+          {posts.length > 0 ? (
+            posts.map((post) => <PostItem key={post._id} {...post} />)
+          ) : (
+            <h3>You posts feed is empty</h3>
+          )}
+        </section>
+      </article>
+    </div>
   );
 };
 
-export default Dashboard;
+export default MyPosts;
