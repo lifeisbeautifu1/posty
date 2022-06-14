@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaSignInAlt, FaSignOutAlt, FaUser } from 'react-icons/fa';
+// import { FaSignInAlt, FaSignOutAlt, FaUser } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout, reset } from '../features/auth/authSlice';
@@ -22,21 +22,17 @@ const Navbar = () => {
         <ul>
           {user ? (
             <li>
-              <button className="btn" onClick={onLogout}>
-                <FaSignOutAlt /> Logout
-              </button>
+              <Link to="/" onClick={onLogout}>
+                Logout
+              </Link>
             </li>
           ) : (
             <>
               <li>
-                <Link to="/login">
-                  <FaSignInAlt /> Login
-                </Link>
+                <Link to="/login">Login</Link>
               </li>
               <li>
-                <Link to="/register">
-                  <FaUser /> Register
-                </Link>
+                <Link to="/register">Register</Link>
               </li>
             </>
           )}
