@@ -9,7 +9,7 @@ const {
 const register = async (req, res) => {
   const { name, password, email } = req.body;
   if (!name || !password || !email) {
-    throw new BadRequestError('please provide all fields');
+    throw new BadRequestError('Please provide all fields');
   }
   const user = await User.create(req.body);
   const token = user.createJWT();
@@ -21,12 +21,12 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    throw new BadRequestError('please provide all fields');
+    throw new BadRequestError('Please provide all fields');
   }
   const user = await User.findOne({ email });
-  if (!user) throw new UnauthorizedError('invalid credentials');
+  if (!user) throw new UnauthorizedError('Invalid credentials');
   const isMatch = await user.comparePasswords(password);
-  if (!isMatch) throw new UnauthorizedError('invalid credentials');
+  if (!isMatch) throw new UnauthorizedError('Invalid credentials');
   const token = user.createJWT();
   res
     .status(StatusCodes.OK)

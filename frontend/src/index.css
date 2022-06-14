@@ -1,0 +1,166 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --primary-color: #3b82f6;
+    --secondary-color: #1d4ed8;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap');
+
+
+body {
+    line-height: 1.5;
+    font-family: 'PT Sans', sans-serif;
+    color: var(--primary-color);
+}
+
+html, body {
+    height: 100%;
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary-color);
+}
+
+ul {
+    list-style: none;
+}
+
+.container {
+    width: 100%;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 1.25rem;
+    text-align: center;
+}
+
+.navbar {
+   
+    border-bottom: 1px solid #e6e6e6;
+    margin-bottom: 3.75rem;
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+}
+
+.navbar ul {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.navbar ul li a {
+    display: flex;
+    align-items: center;
+}
+
+.navbar ul li a:hover {
+    color: var(--secondary-color);
+}
+
+.navbar ul li a svg {
+    margin-right: 0.3rem;
+}
+
+.logo {
+    font-weight: 600;
+    font-size: 1.5rem;
+    letter-spacing: 0.5px;
+}
+
+.heading {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 3.125rem;
+    padding: 1.25rem 0;
+}
+
+.heading h1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+}
+
+.form {
+    width: 70%;
+    margin: 0 auto;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem; /* 20px === 1.25rem === 16 * 1.25 */
+}
+
+.form-control {
+    padding: 0.625rem;
+    border: 1px solid #e6e6e6;
+    border-radius: 0.3125rem;
+    font-family: inherit;
+    outline-color: var(--primary-color);
+}
+
+.btn {
+    cursor: pointer;
+    padding: 0.625rem 1.25rem;
+    border-radius: 0.3125rem;
+    border: 1px solid var(--primary-color);
+    background: var(--primary-color);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    appearance: button;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: scale(0.98);
+}
+
+.spinner-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+
+.spinner {
+    width: 4rem;
+    height: 4rem;
+    border: 0.5rem solid #000;
+    border-color: #000 transparent #555 transparent;
+    border-radius: 50%;
+    animation: spin 1.2s linear infinite;
+}
+
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
