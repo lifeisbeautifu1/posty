@@ -18,6 +18,14 @@ const UserSchema = new mongoose.Schema(
       required: [true, 'Please provide password'],
       minlength: 8,
     },
+    following: {
+      type: [String],
+      default: [],
+    },
+    followers: {
+      type: [String],
+      default: [],
+    },
   },
   {
     timestamps: true,

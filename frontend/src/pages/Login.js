@@ -52,7 +52,7 @@ const Login = () => {
     return <Spinner />;
   }
   return (
-    <>
+    <article className="login">
       <section className="heading">
         <h1>
           <FaSignInAlt /> Login
@@ -83,7 +83,7 @@ const Login = () => {
           </button>
         </form>
       </section>
-    </>
+    </article>
   );
 };
 

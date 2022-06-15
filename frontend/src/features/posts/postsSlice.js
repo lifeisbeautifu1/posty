@@ -8,6 +8,7 @@ const initialState = {
   isSuccess: false,
   isLoading: false,
   isModalOpen: false,
+  idToDelete: '',
   message: '',
 };
 
@@ -15,7 +16,7 @@ export const getMyPosts = createAsyncThunk(
   'posts/getMyPosts',
   async (_, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user.token;
+      const token = thunkAPI.getState().auth.user?.token;
       return await postsService.getMyPosts(token);
     } catch (error) {
       const message =
@@ -33,7 +34,7 @@ export const getAllPosts = createAsyncThunk(
   'posts/getAllPosts',
   async (_, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user.token;
+      const token = thunkAPI.getState().auth.user?.token;
       return await postsService.getAllPosts(token);
     } catch (error) {
       const message =
@@ -51,7 +52,7 @@ export const createPost = createAsyncThunk(
   'posts/createPost',
   async (postData, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user.token;
+      const token = thunkAPI.getState().auth.user?.token;
       return await postsService.createPost(postData, token);
     } catch (error) {
       const message =
@@ -69,7 +70,7 @@ export const deletePost = createAsyncThunk(
   'posts/deletePost',
   async (id, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user.token;
+      const token = thunkAPI.getState().auth.user?.token;
       return await postsService.deletePost(id, token);
     } catch (error) {
       const message =
@@ -87,7 +88,7 @@ export const editPost = createAsyncThunk(
   'posts/editPost',
   async (postData, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user.token;
+      const token = thunkAPI.getState().auth?.user?.token;
       return await postsService.editPost(postData, token);
     } catch (error) {
       const message =
@@ -111,6 +112,9 @@ const postsSlice = createSlice({
     },
     closeModal: (state) => {
       state.isModalOpen = false;
+    },
+    setIdToDelete: (state, action) => {
+      state.idToDelete = action.payload;
     },
   },
   extraReducers: {
@@ -197,5 +201,6 @@ const postsSlice = createSlice({
   },
 });
 
-export const { reset, openModal, closeModal } = postsSlice.actions;
+export const { reset, openModal, closeModal, setIdToDelete } =
+  postsSlice.actions;
 export default postsSlice.reducer;

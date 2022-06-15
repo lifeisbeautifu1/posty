@@ -18,9 +18,11 @@ const MyPosts = () => {
   React.useEffect(() => {
     if (isError) console.log(message);
     if (!user) navigate('/login');
-    dispatch(getMyPosts());
+    else {
+      dispatch(getMyPosts());
+    }
     return () => {
-      dispatch(reset);
+      dispatch(reset());
     };
   }, [user, isError, message, navigate, dispatch]);
 

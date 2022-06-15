@@ -59,7 +59,7 @@ const Register = () => {
     return <Spinner />;
   }
   return (
-    <>
+    <article className="register">
       <section className="heading">
         <h1>
           <FaUser /> Register
@@ -109,7 +109,7 @@ const Register = () => {
           </button>
         </form>
       </section>
-    </>
+    </article>
   );
 };
 

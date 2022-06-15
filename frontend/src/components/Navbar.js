@@ -11,13 +11,13 @@ const Navbar = () => {
   const onLogout = () => {
     dispatch(logout());
     dispatch(reset());
-    navigate('/');
+    navigate('/login');
   };
   return (
     <nav className="navbar">
       <div className="container">
         <div className="logo">
-          <Link to="/">Twitter</Link>
+          <Link to="/">Posty</Link>
         </div>
         <ul>
           {user ? (

@@ -10,7 +10,6 @@ const createPost = async (postData, token) => {
   };
 
   const res = await axios.post(API_URL, postData, config);
-  console.log(res.data);
   return res.data;
 };
 
@@ -56,7 +55,6 @@ const getAllPosts = async (token) => {
   };
 
   const res = await axios.get(API_URL + 'all', config);
-  console.log(res.data);
   return res.data;
 };
 

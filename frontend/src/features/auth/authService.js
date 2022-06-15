@@ -20,6 +20,17 @@ const login = async (userData) => {
   return res.data;
 };
 
+const toggleFollow = async (id, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const res = await axios.post(API_URL + 'follow/' + id, {}, config);
+  localStorage.setItem('user', JSON.stringify(res.data));
+  return res.data;
+};
+
 const logout = () => {
   localStorage.removeItem('user');
 };
@@ -28,6 +39,7 @@ const authService = {
   register,
   logout,
   login,
+  toggleFollow,
 };
 
 export default authService;

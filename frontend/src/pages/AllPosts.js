@@ -17,9 +17,11 @@ const AllPosts = () => {
   React.useEffect(() => {
     if (isError) console.log(message);
     if (!user) navigate('/login');
-    dispatch(getAllPosts());
+    else {
+      dispatch(getAllPosts());
+    }
     return () => {
-      dispatch(reset);
+      dispatch(reset());
     };
   }, [user, isError, message, navigate, dispatch]);
 

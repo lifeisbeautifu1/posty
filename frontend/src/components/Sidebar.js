@@ -20,7 +20,7 @@ const Sidebar = () => {
           </Link>
         </li>
         <li>
-          <Link to="/">
+          <Link to="/users">
             <IoIosPeople />
             Users
           </Link>

@@ -1,9 +1,14 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { closeModal, deletePost } from '../features/posts/postsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  closeModal,
+  deletePost,
+  setIdToDelete,
+} from '../features/posts/postsSlice';
 
-const Modal = ({ id }) => {
+const Modal = () => {
   const dispatch = useDispatch();
+  const { idToDelete } = useSelector((state) => state.posts);
   return (
     <div className="modal-container">
       <div className="modal">
@@ -12,8 +17,9 @@ const Modal = ({ id }) => {
           <button
             className="btn delete"
             onClick={() => {
-              dispatch(deletePost(id));
+              dispatch(deletePost(idToDelete));
               dispatch(closeModal());
+              dispatch(setIdToDelete(''));
             }}
           >
             Delete
