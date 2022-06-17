@@ -7,7 +7,7 @@ const {
   register,
   getInformation,
   getAllUsers,
-  toggleFollow,
+  followUser,
 } = require('../controllers/users');
 const auth = require('../middleware/auth');
 
@@ -19,6 +19,6 @@ router.get('/me', auth, getInformation);
 
 router.get('/', auth, getAllUsers);
 
-router.post('/follow/:id', auth, toggleFollow);
+router.get('/follow/:id', auth, followUser);
 
 module.exports = router;

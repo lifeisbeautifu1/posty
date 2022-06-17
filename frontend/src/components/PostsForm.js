@@ -14,7 +14,7 @@ const PostsForm = () => {
     <div className="form">
       <form onSubmit={onSubmit}>
         <label htmlFor="text">Create new post</label>
-        <input
+        <textarea
           type="text"
           name="text"
           autoComplete="off"

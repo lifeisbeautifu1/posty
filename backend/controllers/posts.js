@@ -1,9 +1,5 @@
 const { StatusCodes } = require('http-status-codes');
-const {
-  BadRequestError,
-  NotFoundError,
-  UnauthorizedError,
-} = require('../errors');
+const { BadRequestError, NotFoundError } = require('../errors');
 const Posts = require('../models/posts');
 
 const getPosts = async (req, res) => {
@@ -52,10 +48,27 @@ const deletePost = async (req, res) => {
   res.status(StatusCodes.OK).json({ id: req.params.id });
 };
 
+const likePost = async (req, res) => {
+  let post = await Posts.findById(req.params.id);
+  if (!post) throw new NotFoundError(`Post with id ${postId} does not exist!`);
+  if (post.likes.includes(req.user.id)) {
+    post.likes = post.likes.filter((id) => id !== req.user.id);
+  } else {
+    post.likes.push(req.user.id);
+  }
+  post = await Posts.findByIdAndUpdate(req.params.id, post, {
+    new: true,
+    runValidators: true,
+  });
+  const posts = await Posts.find().sort('-createdAt');
+  res.status(StatusCodes.OK).json(posts);
+};
+
 module.exports = {
   getPosts,
   getAllPosts,
   updatePost,
   deletePost,
   createPost,
+  likePost,
 };

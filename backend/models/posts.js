@@ -15,6 +15,10 @@ const PostsSchema = new mongoose.Schema(
       required: [true, 'Please provide user'],
       ref: 'Users',
     },
+    likes: {
+      type: [String],
+      default: [],
+    },
   },
   {
     timestamps: true,

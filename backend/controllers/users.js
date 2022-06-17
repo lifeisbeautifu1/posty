@@ -50,21 +50,21 @@ const getAllUsers = async (req, res) => {
   res.status(StatusCodes.OK).json(allUsers);
 };
 
-const toggleFollow = async (req, res) => {
+const followUser = async (req, res) => {
   let user = await User.findById(req.params.id);
   if (!user)
     throw new NotFoundError(`User with id ${req.body.id} doesn't exist!`);
   let follower = await User.findById(req.user.id);
-  if (user.followers.indexOf(req.user.id) === -1) {
-    user.followers.push(req.user.id);
-    follower.following.push(req.params.id);
-  } else {
+  if (user.followers.includes(req.user.id)) {
     user.followers = user.followers.filter((id) => {
       return id !== req.user.id;
     });
     follower.following = follower.following.filter((id) => {
       return id !== req.params.id;
     });
+  } else {
+    user.followers.push(req.user.id);
+    follower.following.push(req.params.id);
   }
   user = await User.findByIdAndUpdate(user._id, user, {
     runValidators: true,
@@ -95,5 +95,5 @@ module.exports = {
   login,
   getInformation,
   getAllUsers,
-  toggleFollow,
+  followUser,
 };

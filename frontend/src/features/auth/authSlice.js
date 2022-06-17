@@ -28,12 +28,12 @@ export const register = createAsyncThunk(
   }
 );
 
-export const toggleFollow = createAsyncThunk(
+export const followUser = createAsyncThunk(
   'auth/toggleFollow',
   async (id, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth?.user?.token;
-      return await authService.toggleFollow(id, token);
+      return await authService.followUser(id, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -105,15 +105,15 @@ export const authSlice = createSlice({
       state.message = action.payload;
       state.user = null;
     },
-    [toggleFollow.pending]: (state) => {
+    [followUser.pending]: (state) => {
       state.isLoading = true;
     },
-    [toggleFollow.fulfilled]: (state, action) => {
+    [followUser.fulfilled]: (state, action) => {
       state.isLoading = true;
       state.isSuccess = true;
       state.user.following = action.payload?.following;
     },
-    [toggleFollow.rejected]: (state, action) => {
+    [followUser.rejected]: (state) => {
       state.isLoading = false;
       state.isError = true;
     },

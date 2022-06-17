@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { GiOpenBook, GiBookCover } from 'react-icons/gi';
 import { IoIosPeople } from 'react-icons/io';
+import { FaHome } from 'react-icons/fa';
 
 const Sidebar = () => {
   return (
@@ -11,6 +12,12 @@ const Sidebar = () => {
           <Link to="/all">
             <GiOpenBook />
             All Posts
+          </Link>
+        </li>
+        <li>
+          <Link to="/following">
+            <FaHome />
+            Following
           </Link>
         </li>
         <li>

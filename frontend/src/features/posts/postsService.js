@@ -58,12 +58,23 @@ const getAllPosts = async (token) => {
   return res.data;
 };
 
+const likePost = async (id, token) => {
+  const config = {
+    headers: {
+      Authorization: 'Bearer ' + token,
+    },
+  };
+  const res = await axios.get(`${API_URL}like/${id}`, config);
+  return res.data;
+};
+
 const postsService = {
   getMyPosts,
   getAllPosts,
   deletePost,
   createPost,
   editPost,
+  likePost,
 };
 
 export default postsService;

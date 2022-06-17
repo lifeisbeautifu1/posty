@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { toggleFollow } from '../features/auth/authSlice';
+import { followUser } from '../features/auth/authSlice';
 const User = ({ _id, name, email, followers }) => {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -19,7 +19,7 @@ const User = ({ _id, name, email, followers }) => {
         <h3 className="followers">Followers: {followers.length}</h3>
       </div>
       <div className="user-buttons">
-        <button className="btn" onClick={() => dispatch(toggleFollow(_id))}>
+        <button className="btn" onClick={() => dispatch(followUser(_id))}>
           {user?.following?.find((following) => following === _id)
             ? 'Unfollow'
             : 'Follow'}

@@ -8,6 +8,7 @@ const {
   updatePost,
   createPost,
   deletePost,
+  likePost,
 } = require('../controllers/posts');
 
 posts.get('/', getPosts);
@@ -19,5 +20,7 @@ posts.post('/', createPost);
 posts.patch('/:id', updatePost);
 
 posts.delete('/:id', deletePost);
+
+posts.get('/like/:id', likePost);
 
 module.exports = posts;

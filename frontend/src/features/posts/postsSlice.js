@@ -102,6 +102,24 @@ export const editPost = createAsyncThunk(
   }
 );
 
+export const likePost = createAsyncThunk(
+  'posts/likePost',
+  async (id, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth?.user?.token;
+      return await postsService.likePost(id, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 const postsSlice = createSlice({
   name: 'posts',
   initialState,
@@ -118,6 +136,23 @@ const postsSlice = createSlice({
     },
   },
   extraReducers: {
+    [likePost.pending]: (state, action) => {
+      state.isLoading = true;
+    },
+    [likePost.fulfilled]: (state, action) => {
+      state.isSuccess = true;
+      state.isLoading = false;
+      state.allPosts = action.payload;
+      const id = state.posts.length > 0 ? state.posts[0].createdBy : '';
+      state.posts = action.payload.filter((post) => {
+        return post.createdBy === id;
+      });
+    },
+    [likePost.rejected]: (state, action) => {
+      state.isError = true;
+      state.isLoading = false;
+      state.message = action.payload;
+    },
     [createPost.pending]: (state, action) => {
       state.isLoading = true;
     },

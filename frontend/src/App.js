@@ -9,6 +9,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Navbar from './components/Navbar';
 import Modal from './components/Modal';
+import Following from './pages/Following';
 import { useSelector } from 'react-redux';
 const App = () => {
   const { isModalOpen } = useSelector((state) => state.posts);
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/">
             <Route index element={<MyPosts />} />
             <Route path="all" element={<AllPosts />} />
+            <Route path="following" element={<Following />} />
             <Route path="users" element={<Users />} />
           </Route>
           <Route path="/login" element={<Login />} />
