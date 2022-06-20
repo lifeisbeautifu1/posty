@@ -1,9 +1,11 @@
 import axios from 'axios';
 
-const API_URL = '/api/users/';
+const API = axios.create({
+  baseURL: 'http://localhost:5000/api/users',
+});
 
 const register = async (userData) => {
-  const res = await axios.post(API_URL + 'register', userData);
+  const res = await API.post('/register', userData);
 
   if (res.data) {
     localStorage.setItem('user', JSON.stringify(res.data));
@@ -13,7 +15,7 @@ const register = async (userData) => {
 };
 
 const login = async (userData) => {
-  const res = await axios.post(API_URL + 'login', userData);
+  const res = await API.post('/login', userData);
   if (res.data) {
     localStorage.setItem('user', JSON.stringify(res.data));
   }
@@ -26,7 +28,7 @@ const followUser = async (id, token) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  const res = await axios.get(API_URL + 'follow/' + id, config);
+  const res = await API.get('/follow/' + id, config);
   localStorage.setItem('user', JSON.stringify(res.data));
   return res.data;
 };

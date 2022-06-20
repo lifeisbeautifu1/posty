@@ -1,70 +1,47 @@
 import axios from 'axios';
 
-const API_URL = '/api/posts/';
+const API = axios.create({
+  baseURL: 'http://localhost:5000/api/posts',
+});
 
-const createPost = async (postData, token) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
+API.interceptors.request.use((req) => {
+  if (localStorage.getItem('user')) {
+    req.headers.Authorization = `Bearer ${
+      JSON.parse(localStorage.getItem('user')).token
+    }`;
+  }
+  return req;
+});
 
-  const res = await axios.post(API_URL, postData, config);
+const createPost = async (postData) => {
+  const res = await API.post('/', postData);
   return res.data;
 };
 
-const deletePost = async (id, token) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-
-  const res = await axios.delete(API_URL + id, config);
-
-  return res.data;
-};
-
-const editPost = async (postData, token) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-  const res = await axios.patch(API_URL + postData.id, postData, config);
-  return res.data;
-};
-
-const getMyPosts = async (token) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-
-  const res = await axios.get(API_URL, config);
+const deletePost = async (id) => {
+  const res = await API.delete('/' + id);
 
   return res.data;
 };
 
-const getAllPosts = async (token) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-
-  const res = await axios.get(API_URL + 'all', config);
+const editPost = async (postData) => {
+  const res = await API.patch('/' + postData.id, postData);
   return res.data;
 };
 
-const likePost = async (id, token) => {
-  const config = {
-    headers: {
-      Authorization: 'Bearer ' + token,
-    },
-  };
-  const res = await axios.get(`${API_URL}like/${id}`, config);
+const getMyPosts = async () => {
+  const res = await API.get('/');
+
+  return res.data;
+};
+
+const getAllPosts = async () => {
+  const res = await API.get('/all');
+  return res.data;
+};
+
+const likePost = async (id) => {
+  const res = await API.get(`/like/${id}`);
   return res.data;
 };
 

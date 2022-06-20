@@ -4,7 +4,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { register, reset } from '../features/auth/authSlice';
+import FileBase from 'react-file-base64';
 import Spinner from '../components/Spinner';
+import PasswordInput from '../components/PasswordInput';
 
 const Register = () => {
   const [formData, setFormData] = React.useState({
@@ -12,8 +14,9 @@ const Register = () => {
     email: '',
     password: '',
     password2: '',
+    image: '',
   });
-  const { name, password, password2, email } = formData;
+  const { name, password, password2, email, image } = formData;
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -49,6 +52,7 @@ const Register = () => {
         name,
         email,
         password,
+        image,
       };
 
       dispatch(register(userData));
@@ -86,9 +90,7 @@ const Register = () => {
             onChange={onChange}
           />
 
-          <input
-            type="password"
-            className="form-control"
+          <PasswordInput
             placeholder="Enter password"
             name="password"
             value={password}
@@ -102,6 +104,15 @@ const Register = () => {
             name="password2"
             value={password2}
             onChange={onChange}
+          />
+
+          <FileBase
+            type="file"
+            multiple={false}
+            className="form-control"
+            onDone={({ base64 }) =>
+              setFormData((prevState) => ({ ...prevState, image: base64 }))
+            }
           />
 
           <button type="submit" className="btn">

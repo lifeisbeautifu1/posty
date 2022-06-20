@@ -15,6 +15,10 @@ const PostsSchema = new mongoose.Schema(
       required: [true, 'Please provide user'],
       ref: 'Users',
     },
+    image: {
+      type: String,
+      required: [true, 'Please provide picture'],
+    },
     likes: {
       type: [String],
       default: [],

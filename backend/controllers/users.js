@@ -20,6 +20,7 @@ const register = async (req, res) => {
     token,
     following: user.following,
     followers: user.followers,
+    image: user.image,
   });
 };
 
@@ -40,12 +41,13 @@ const login = async (req, res) => {
     token,
     following: user.following,
     followers: user.followers,
+    image: user.image,
   });
 };
 
 const getAllUsers = async (req, res) => {
   const allUsers = await User.find().select(
-    '_id name email following followers'
+    '_id name email following followers image'
   );
   res.status(StatusCodes.OK).json(allUsers);
 };

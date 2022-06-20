@@ -1,6 +1,7 @@
 const { StatusCodes } = require('http-status-codes');
 const { BadRequestError, NotFoundError } = require('../errors');
 const Posts = require('../models/posts');
+const Users = require('../models/user');
 
 const getPosts = async (req, res) => {
   const posts = await Posts.find({ createdBy: req.user.id }).sort('-createdAt');
@@ -14,10 +15,12 @@ const getAllPosts = async (req, res) => {
 
 const createPost = async (req, res) => {
   if (!req.body.text) throw new BadRequestError('Please provide text field!');
+  const user = await Users.findById(req.user.id);
   const post = await Posts.create({
     text: req.body.text,
     author: req.user.name,
     createdBy: req.user.id,
+    image: user.image,
   });
   res.status(StatusCodes.CREATED).json(post);
 };

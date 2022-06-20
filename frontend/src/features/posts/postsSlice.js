@@ -16,8 +16,7 @@ export const getMyPosts = createAsyncThunk(
   'posts/getMyPosts',
   async (_, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user?.token;
-      return await postsService.getMyPosts(token);
+      return await postsService.getMyPosts();
     } catch (error) {
       const message =
         (error.response &&
@@ -34,8 +33,7 @@ export const getAllPosts = createAsyncThunk(
   'posts/getAllPosts',
   async (_, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user?.token;
-      return await postsService.getAllPosts(token);
+      return await postsService.getAllPosts();
     } catch (error) {
       const message =
         (error.response &&
@@ -52,8 +50,7 @@ export const createPost = createAsyncThunk(
   'posts/createPost',
   async (postData, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user?.token;
-      return await postsService.createPost(postData, token);
+      return await postsService.createPost(postData);
     } catch (error) {
       const message =
         (error.response &&
@@ -70,8 +67,7 @@ export const deletePost = createAsyncThunk(
   'posts/deletePost',
   async (id, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user?.token;
-      return await postsService.deletePost(id, token);
+      return await postsService.deletePost(id);
     } catch (error) {
       const message =
         (error.response &&
@@ -88,8 +84,7 @@ export const editPost = createAsyncThunk(
   'posts/editPost',
   async (postData, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth?.user?.token;
-      return await postsService.editPost(postData, token);
+      return await postsService.editPost(postData);
     } catch (error) {
       const message =
         (error.response &&
@@ -106,8 +101,7 @@ export const likePost = createAsyncThunk(
   'posts/likePost',
   async (id, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth?.user?.token;
-      return await postsService.likePost(id, token);
+      return await postsService.likePost(id);
     } catch (error) {
       const message =
         (error.response &&

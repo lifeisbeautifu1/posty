@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { GiOpenBook, GiBookCover } from 'react-icons/gi';
-import { IoIosPeople } from 'react-icons/io';
+import { GiBookCover } from 'react-icons/gi';
+import { BsPeopleFill } from 'react-icons/bs';
 import { FaHome } from 'react-icons/fa';
+import { FiHash } from 'react-icons/fi';
 
 const Sidebar = () => {
   return (
@@ -10,25 +11,25 @@ const Sidebar = () => {
       <ul>
         <li>
           <Link to="/all">
-            <GiOpenBook />
-            All Posts
+            <FiHash />
+            Explore
           </Link>
         </li>
         <li>
           <Link to="/following">
-            <FaHome />
+            <GiBookCover />
             Following
           </Link>
         </li>
         <li>
           <Link to="/">
-            <GiBookCover />
+            <FaHome />
             My Posts
           </Link>
         </li>
         <li>
           <Link to="/users">
-            <IoIosPeople />
+            <BsPeopleFill />
             Users
           </Link>
         </li>

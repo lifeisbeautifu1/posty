@@ -33,7 +33,7 @@ const AllPosts = () => {
       <Sidebar />
       <article className="posts-wrapper">
         <section className="heading">
-          <h3>All posts</h3>
+          <h3>Explore all posts</h3>
         </section>
         <section className="content">
           {allPosts.length > 0 ? (

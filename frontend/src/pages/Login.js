@@ -1,10 +1,11 @@
 import React from 'react';
-import { FaSignInAlt } from 'react-icons/fa';
+import { FcLock } from 'react-icons/fc';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { login, reset } from '../features/auth/authSlice';
 import Spinner from '../components/Spinner';
+import PasswordInput from '../components/PasswordInput';
 
 const Login = () => {
   const [formData, setFormData] = React.useState({
@@ -55,7 +56,7 @@ const Login = () => {
     <article className="login">
       <section className="heading">
         <h1>
-          <FaSignInAlt /> Login
+          <FcLock /> Login
         </h1>
         <p>Login and start posting</p>
       </section>
@@ -69,15 +70,13 @@ const Login = () => {
             value={email}
             onChange={onChange}
           />
-
-          <input
-            type="password"
-            className="form-control"
+          <PasswordInput
             placeholder="Enter password"
             name="password"
             value={password}
             onChange={onChange}
           />
+
           <button type="submit" className="btn btn-block">
             Submit
           </button>

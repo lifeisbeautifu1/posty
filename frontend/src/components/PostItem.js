@@ -4,6 +4,8 @@ import { editPost } from '../features/posts/postsSlice';
 import { FaTrashAlt } from 'react-icons/fa';
 import { FcLike } from 'react-icons/fc';
 import { FiEdit } from 'react-icons/fi';
+import ReactEmoji from 'react-emoji';
+import moment from 'moment';
 import {
   openModal,
   setIdToDelete,
@@ -11,22 +13,15 @@ import {
 } from '../features/posts/postsSlice';
 import { GoComment } from 'react-icons/go';
 
-const monthNames = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
-
-const PostItem = ({ _id, text, createdAt, author, createdBy, likes }) => {
+const PostItem = ({
+  _id,
+  text,
+  createdAt,
+  author,
+  createdBy,
+  likes,
+  image,
+}) => {
   const [isEdit, setIsEdit] = React.useState(false);
   const [newText, setNewText] = React.useState(text);
   const { user } = useSelector((state) => state.auth);
@@ -50,19 +45,12 @@ const PostItem = ({ _id, text, createdAt, author, createdBy, likes }) => {
     <div className="post">
       <div className="post-container">
         <div className="photo-wrapper">
-          <img
-            className="photo"
-            src="https://i.imgur.com/eAXygvT.png"
-            alt="profile"
-          />
+          <img className="photo" src={image} alt="profile" />
         </div>
         <div className="post-desc">
           <div className="info">
             <h1>{author}</h1>
-            <span>
-              {monthNames[new Date(createdAt).getMonth()]}{' '}
-              {new Date(createdAt).getDate()}
-            </span>
+            <span>{moment(createdAt).fromNow()}</span>
           </div>
           {isEdit ? (
             <form ref={formRef} onSubmit={handleSubmit}>
@@ -74,7 +62,7 @@ const PostItem = ({ _id, text, createdAt, author, createdBy, likes }) => {
               />
             </form>
           ) : (
-            <p>{text}</p>
+            <p>{ReactEmoji.emojify(text)}</p>
           )}
         </div>
       </div>

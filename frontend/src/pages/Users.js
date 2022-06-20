@@ -34,7 +34,7 @@ const Users = () => {
         <section className="heading">
           <h3>All Users</h3>
         </section>
-        <section className="content">
+        <section className="users-list">
           {allUsers
             ?.filter((user) => {
               return user?._id !== me?.id;
