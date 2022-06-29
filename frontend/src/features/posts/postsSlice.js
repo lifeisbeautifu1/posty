@@ -131,11 +131,11 @@ const postsSlice = createSlice({
   },
   extraReducers: {
     [likePost.pending]: (state, action) => {
-      state.isLoading = true;
+      // state.isLoading = true;
     },
     [likePost.fulfilled]: (state, action) => {
-      state.isSuccess = true;
-      state.isLoading = false;
+      // state.isSuccess = true;
+      // state.isLoading = false;
       state.allPosts = action.payload;
       const id = state.posts.length > 0 ? state.posts[0].createdBy : '';
       state.posts = action.payload.filter((post) => {
@@ -144,20 +144,20 @@ const postsSlice = createSlice({
     },
     [likePost.rejected]: (state, action) => {
       state.isError = true;
-      state.isLoading = false;
+      // state.isLoading = false;
       state.message = action.payload;
     },
     [createPost.pending]: (state, action) => {
-      state.isLoading = true;
+      // state.isLoading = true;
     },
     [createPost.fulfilled]: (state, action) => {
-      state.isLoading = false;
-      state.isSuccess = true;
+      // state.isLoading = false;
+      // state.isSuccess = true;
       state.posts.unshift(action.payload);
     },
     [createPost.rejected]: (state, action) => {
-      state.isError = true;
-      state.isLoading = false;
+      // state.isError = true;
+      // state.isLoading = false;
       state.message = action.payload;
     },
     [getMyPosts.pending]: (state, action) => {
@@ -187,26 +187,26 @@ const postsSlice = createSlice({
       state.message = action.payload;
     },
     [deletePost.pending]: (state, action) => {
-      state.isLoading = true;
+      // state.isLoading = true;
     },
     [deletePost.fulfilled]: (state, action) => {
-      state.isLoading = false;
-      state.isSuccess = true;
+      // state.isLoading = false;
+      // state.isSuccess = true;
       state.posts = state.posts.filter(
         (post) => post._id !== action.payload.id
       );
     },
     [deletePost.rejected]: (state, action) => {
       state.isError = true;
-      state.isLoading = false;
+      // state.isLoading = false;
       state.message = action.payload;
     },
     [editPost.pending]: (state, action) => {
-      state.isLoading = true;
+      // state.isLoading = true;
     },
     [editPost.fulfilled]: (state, action) => {
-      state.isLoading = false;
-      state.isSuccess = true;
+      // state.isLoading = false;
+      // state.isSuccess = true;
       state.posts = state.posts.map((post) => {
         if (post._id === action.payload._id) {
           return { ...post, text: action.payload.text };
@@ -224,7 +224,7 @@ const postsSlice = createSlice({
     },
     [editPost.rejected]: (state, action) => {
       state.isError = true;
-      state.isLoading = false;
+      // state.isLoading = false;
       state.message = action.payload;
     },
   },

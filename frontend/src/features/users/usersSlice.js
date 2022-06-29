@@ -13,8 +13,7 @@ export const getAllUsers = createAsyncThunk(
   'users/getAllUsers',
   async (_, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user?.token;
-      return await usersService.getAllUsers(token);
+      return await usersService.getAllUsers();
     } catch (error) {
       const message =
         (error.response &&
@@ -26,6 +25,7 @@ export const getAllUsers = createAsyncThunk(
     }
   }
 );
+
 
 const usersSlice = createSlice({
   name: 'users',

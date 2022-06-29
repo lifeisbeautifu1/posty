@@ -1,28 +1,28 @@
-import React from 'react';
-import Sidebar from '../components/Sidebar';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAllUsers, reset } from '../features/users/usersSlice';
 import { toast } from 'react-toastify';
-import Spinner from '../components/Spinner';
-import User from '../components/User';
+import { Spinner, User, Sidebar } from '../components';
+import { useEffect } from 'react';
 
 const Users = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user: me } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
   const { isError, message, isLoading, allUsers } = useSelector(
     (state) => state.users
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isError) toast.error(message);
-    if (!me) navigate('/login');
-    dispatch(getAllUsers());
+    if (!user) navigate('/login');
+    else {
+      dispatch(getAllUsers());
+    }
     return () => {
       dispatch(reset());
     };
-  }, [navigate, isError, message, dispatch, me]);
+  }, [navigate, isError, message, dispatch]);
 
   if (isLoading) {
     return <Spinner />;
@@ -36,11 +36,11 @@ const Users = () => {
         </section>
         <section className="users-list">
           {allUsers
-            ?.filter((user) => {
-              return user?._id !== me?.id;
+            ?.filter((u) => {
+              return u?._id !== user?.id;
             })
-            .map((user) => (
-              <User key={user?._id} {...user} />
+            .map((u) => (
+              <User key={u?._id} {...u} />
             ))}
         </section>
       </article>

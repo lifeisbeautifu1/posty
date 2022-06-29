@@ -4,8 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { login, reset } from '../features/auth/authSlice';
-import Spinner from '../components/Spinner';
-import PasswordInput from '../components/PasswordInput';
+import { Spinner, PasswordInput } from '../components';
 
 const Login = () => {
   const [formData, setFormData] = React.useState({
@@ -76,7 +75,6 @@ const Login = () => {
             value={password}
             onChange={onChange}
           />
-
           <button type="submit" className="btn btn-block">
             Submit
           </button>

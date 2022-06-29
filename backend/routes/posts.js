@@ -4,6 +4,7 @@ const posts = express.Router();
 
 const {
   getPosts,
+  getPost,
   getAllPosts,
   updatePost,
   createPost,
@@ -12,6 +13,8 @@ const {
 } = require('../controllers/posts');
 
 posts.get('/', getPosts);
+
+posts.get('/:id', getPost);
 
 posts.get('/all', getAllPosts);
 

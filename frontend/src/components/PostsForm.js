@@ -24,6 +24,7 @@ const PostsForm = () => {
           type="text"
           name="text"
           autoComplete="off"
+          disabled
           value={text}
           onChange={(e) => setText(e.target.value)}
           className="form-control"

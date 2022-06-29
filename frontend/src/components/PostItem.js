@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { editPost } from '../features/posts/postsSlice';
 import { FaTrashAlt } from 'react-icons/fa';
 import { FcLike } from 'react-icons/fc';
 import { FiEdit } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 import ReactEmoji from 'react-emoji';
 import moment from 'moment';
 import {
@@ -22,14 +23,26 @@ const PostItem = ({
   likes,
   image,
 }) => {
-  const [isEdit, setIsEdit] = React.useState(false);
-  const [newText, setNewText] = React.useState(text);
+  const [isEdit, setIsEdit] = useState(false);
+  const [newText, setNewText] = useState(text);
+  const [stateLikes, setStateLikes] = useState(likes);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(editPost({ text: newText, id: _id }));
     setIsEdit(false);
+  };
+  const hasLiked = stateLikes.find((like) => like === user.id);
+
+  const handleLike = () => {
+    if (hasLiked) {
+      setStateLikes(stateLikes.filter((like) => like !== user.id));
+    } else {
+      setStateLikes([...stateLikes, user.id]);
+    }
+    dispatch(likePost(_id));
   };
 
   const handleEdit = () => {
@@ -67,9 +80,36 @@ const PostItem = ({
         </div>
       </div>
       <div className="post-buttons-container">
-        <FcLike className="like-btn" onClick={() => dispatch(likePost(_id))} />{' '}
-        {likes.length}
-        <GoComment className="like-btn" /> {0}
+        {hasLiked ? (
+          <>
+            <FcLike className="like-btn" onClick={handleLike} />{' '}
+            {stateLikes.length}
+          </>
+        ) : (
+          <>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="icon"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+              onClick={handleLike}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+              />
+            </svg>{' '}
+            {stateLikes.length}
+          </>
+        )}
+        <GoComment
+          className="like-btn"
+          onClick={() => navigate('/post/' + _id)}
+        />{' '}
+        {0}
       </div>
       {user
         ? user?.id === createdBy && (
@@ -91,6 +131,6 @@ const PostItem = ({
         : null}
     </div>
   );
-};;;
+};
 
 export default PostItem;

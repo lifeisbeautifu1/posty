@@ -1,10 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import Spinner from '../components/Spinner';
-import PostItem from '../components/PostItem';
 import { reset, getAllPosts } from '../features/posts/postsSlice';
-import Sidebar from '../components/Sidebar';
+import { Spinner, PostItem, Sidebar } from '../components';
 
 const AllPosts = () => {
   const navigate = useNavigate();

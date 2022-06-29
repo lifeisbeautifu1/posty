@@ -5,8 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { register, reset } from '../features/auth/authSlice';
 import FileBase from 'react-file-base64';
-import Spinner from '../components/Spinner';
-import PasswordInput from '../components/PasswordInput';
+import { Spinner, PasswordInput } from '../components';
 
 const Register = () => {
   const [formData, setFormData] = React.useState({
