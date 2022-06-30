@@ -6,10 +6,51 @@ const Comment = require('../models/comment');
 
 
 const getPosts = async (req, res) => {
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 5;
+  const skip = (page - 1) * limit;
+
+  const allPosts = await Posts.find({ author: req.user.id });
+
   const posts = await Posts.find({ author: req.user.id })
     .populate('author', 'name image')
-    .sort('-createdAt');
-  res.status(StatusCodes.OK).json(posts);
+    .sort('-createdAt')
+    .skip(skip)
+    .limit(limit);
+
+  res.status(StatusCodes.OK).json({
+    posts,
+    numberOfPages: Math.ceil(allPosts.length / limit),
+    currentPage: page,
+  });
+};
+
+const getFollowingPosts = async (req, res) => {
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 5;
+  const skip = (page - 1) * limit;
+
+  const me = await Users.findById(req.user.id);
+  const allPosts = await Posts.find({
+    author: {
+      $in: me.following,
+    },
+  });
+  const posts = await Posts.find({
+    author: {
+      $in: me.following,
+    },
+  })
+    .populate('author', 'name image')
+    .sort('-createdAt')
+    .skip(skip)
+    .limit(limit);
+
+  res.status(StatusCodes.OK).json({
+    posts,
+    numberOfPages: Math.ceil(allPosts.length / limit),
+    currentPage: +page,
+  });
 };
 
 const getPost = async (req, res) => {
@@ -26,10 +67,22 @@ const getPost = async (req, res) => {
 };
 
 const getAllPosts = async (req, res) => {
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 5;
+  const skip = (page - 1) * limit;
+  const total = await Posts.countDocuments();
+  const numberOfPages = Math.ceil(total / limit);
+
   const posts = await Posts.find()
     .populate('author', 'name image')
-    .sort('-createdAt');
-  res.status(StatusCodes.OK).json(posts);
+    .sort('-createdAt')
+    .skip(skip)
+    .limit(limit);
+  res.status(StatusCodes.OK).json({
+    posts,
+    numberOfPages,
+    currentPage: +page,
+  });
 };
 
 const createPost = async (req, res) => {
@@ -158,6 +211,7 @@ const deleteCommentOnPost = async (req, res) => {
 module.exports = {
   getPosts,
   getAllPosts,
+  getFollowingPosts,
   updatePost,
   deletePost,
   createPost,

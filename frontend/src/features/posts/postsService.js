@@ -29,9 +29,8 @@ const editPost = async (postData) => {
   return res.data;
 };
 
-const getMyPosts = async () => {
-  const res = await API.get('/');
-
+const getMyPosts = async (page) => {
+  const res = await API.get('/?page=' + page);
   return res.data;
 };
 
@@ -54,8 +53,13 @@ const deleteCommentOnPost = async (postId, commentId) => {
   return data;
 };
 
-const getAllPosts = async () => {
-  const res = await API.get('/all');
+const getAllPosts = async (page) => {
+  const res = await API.get('/all?page=' + page);
+  return res.data;
+};
+
+const getFollowingPosts = async (page) => {
+  const res = await API.get('/following?page=' + page);
   return res.data;
 };
 
@@ -68,6 +72,7 @@ const postsService = {
   getMyPosts,
   getPost,
   getAllPosts,
+  getFollowingPosts,
   deletePost,
   createPost,
   editPost,

@@ -1,9 +1,16 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { Spinner, PostsForm, PostItem, Sidebar } from '../components';
+import {
+  Spinner,
+  PostsForm,
+  PostItem,
+  Sidebar,
+  Pagination,
+} from '../components';
 import { getMyPosts, getAllPosts } from '../features/posts/postsSlice';
 import { getAllUsers } from '../features/users/usersSlice';
+import { useQuery } from '../config/utils';
 
 const MyPosts = () => {
   const navigate = useNavigate();
@@ -13,10 +20,13 @@ const MyPosts = () => {
     (state) => state.posts
   );
 
+  const query = useQuery();
+  const page = query.get('page') || 1;
+
   useEffect(() => {
     if (user) {
-      dispatch(getAllPosts());
-      dispatch(getMyPosts());
+      dispatch(getAllPosts(page));
+      dispatch(getMyPosts(page));
       dispatch(getAllUsers());
     }
   }, []);
@@ -25,12 +35,12 @@ const MyPosts = () => {
     if (isError) console.log(message);
     if (!user) navigate('/login');
     else {
-      dispatch(getMyPosts());
+      dispatch(getMyPosts(page));
     }
     // return () => {
     //   dispatch(reset());
     // };
-  }, [user, isError, message, navigate, dispatch]);
+  }, [user, isError, message, navigate, dispatch, page]);
 
   if (isLoading) {
     return <Spinner />;
@@ -53,6 +63,7 @@ const MyPosts = () => {
             <h3>You posts feed is empty</h3>
           )}
         </section>
+        <Pagination path="/" />
       </article>
     </div>
   );

@@ -6,6 +6,7 @@ const {
   getPosts,
   getPost,
   getAllPosts,
+  getFollowingPosts,
   updatePost,
   createPost,
   deletePost,
@@ -17,6 +18,8 @@ const {
 posts.get('/', getPosts);
 
 posts.get('/all', getAllPosts);
+
+posts.get('/following', getFollowingPosts);
 
 posts.get('/:id', getPost);
 

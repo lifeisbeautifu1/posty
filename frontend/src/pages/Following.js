@@ -1,34 +1,35 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAllPosts } from '../features/posts/postsSlice';
-import { Spinner, PostItem, Sidebar } from '../components';
+import { getFollowingPosts } from '../features/posts/postsSlice';
+import { Spinner, PostItem, Sidebar, Pagination } from '../components';
+import { useQuery } from '../config/utils';
 
 const AllPosts = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  const { allPosts, isLoading, isError, message } = useSelector(
+  const { followingPosts, isLoading, isError, message } = useSelector(
     (state) => state.posts
   );
+
+  const query = useQuery();
+  const page = query.get('page') || 1;
 
   React.useEffect(() => {
     if (isError) console.log(message);
     if (!user) navigate('/login');
     else {
-      dispatch(getAllPosts());
+      dispatch(getFollowingPosts(page));
     }
     // return () => {
     //   dispatch(reset());
     // };
-  }, [user, isError, message, navigate, dispatch]);
+  }, [user, isError, message, navigate, dispatch, page]);
 
   if (isLoading) {
     return <Spinner />;
   }
-  const followingPosts = allPosts?.filter((post) => {
-    return user.following.includes(post.author._id);
-  });
   return (
     <div className="grid">
       <Sidebar />
@@ -45,6 +46,7 @@ const AllPosts = () => {
             <h3>Feed is empty</h3>
           )}
         </section>
+        <Pagination path="/following" />
       </article>
     </div>
   );

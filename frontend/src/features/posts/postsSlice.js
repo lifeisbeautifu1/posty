@@ -4,6 +4,8 @@ import postsService from './postsService';
 const initialState = {
   posts: null,
   allPosts: [],
+  followingPosts: [],
+  numberOfPages: null,
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -14,9 +16,9 @@ const initialState = {
 
 export const getMyPosts = createAsyncThunk(
   'posts/getMyPosts',
-  async (_, thunkAPI) => {
+  async (page, thunkAPI) => {
     try {
-      return await postsService.getMyPosts();
+      return await postsService.getMyPosts(page);
     } catch (error) {
       const message =
         (error.response &&
@@ -31,9 +33,25 @@ export const getMyPosts = createAsyncThunk(
 
 export const getAllPosts = createAsyncThunk(
   'posts/getAllPosts',
-  async (_, thunkAPI) => {
+  async (page, thunkAPI) => {
     try {
-      return await postsService.getAllPosts();
+      return await postsService.getAllPosts(page);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+export const getFollowingPosts = createAsyncThunk(
+  'posts/getFollowingPosts',
+  async (page, thunkAPI) => {
+    try {
+      return await postsService.getFollowingPosts(page);
     } catch (error) {
       const message =
         (error.response &&
@@ -169,7 +187,9 @@ const postsSlice = createSlice({
     [getMyPosts.fulfilled]: (state, action) => {
       // state.isLoading = false;
       // state.isSuccess = true;
-      state.posts = action.payload;
+      console.log(action.payload);
+      state.posts = action.payload.posts;
+      state.numberOfPages = action.payload.numberOfPages;
     },
     [getMyPosts.rejected]: (state, action) => {
       state.isError = true;
@@ -182,9 +202,24 @@ const postsSlice = createSlice({
     [getAllPosts.fulfilled]: (state, action) => {
       // state.isLoading = false;
       // state.isSuccess = true;
-      state.allPosts = action.payload;
+      state.numberOfPages = action.payload.numberOfPages;
+      state.allPosts = action.payload.posts;
     },
     [getAllPosts.rejected]: (state, action) => {
+      state.isError = true;
+      // state.isLoading = false;
+      state.message = action.payload;
+    },
+    [getFollowingPosts.pending]: (state, action) => {
+      // state.isLoading = true;
+    },
+    [getFollowingPosts.fulfilled]: (state, action) => {
+      // state.isLoading = false;
+      // state.isSuccess = true;
+      state.numberOfPages = action.payload.numberOfPages;
+      state.followingPosts = action.payload.posts;
+    },
+    [getFollowingPosts.rejected]: (state, action) => {
       state.isError = true;
       // state.isLoading = false;
       state.message = action.payload;
