@@ -35,15 +35,15 @@ const usersSlice = createSlice({
   },
   extraReducers: {
     [getAllUsers.pending]: (state, action) => {
-      state.isLoading = true;
+      // state.isLoading = true;
     },
     [getAllUsers.fulfilled]: (state, action) => {
-      state.isLoading = false;
-      state.isSuccess = true;
+      // state.isLoading = false;
+      // state.isSuccess = true;
       state.allUsers = action.payload;
     },
     [getAllUsers.rejected]: (state, action) => {
-      state.isLoading = false;
+      // state.isLoading = false;
       state.isError = true;
       state.message = action.payload;
     },

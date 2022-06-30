@@ -22,6 +22,7 @@ const PostItem = ({
   createdBy,
   likes,
   image,
+  comments,
 }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [newText, setNewText] = useState(text);
@@ -34,13 +35,13 @@ const PostItem = ({
     dispatch(editPost({ text: newText, id: _id }));
     setIsEdit(false);
   };
-  const hasLiked = stateLikes.find((like) => like === user.id);
+  const hasLiked = stateLikes.find((like) => like === user?.id);
 
   const handleLike = () => {
     if (hasLiked) {
-      setStateLikes(stateLikes.filter((like) => like !== user.id));
+      setStateLikes(stateLikes.filter((like) => like !== user?.id));
     } else {
-      setStateLikes([...stateLikes, user.id]);
+      setStateLikes([...stateLikes, user?.id]);
     }
     dispatch(likePost(_id));
   };
@@ -109,7 +110,7 @@ const PostItem = ({
           className="like-btn"
           onClick={() => navigate('/post/' + _id)}
         />{' '}
-        {0}
+        {comments?.length ? comments?.length : 0}
       </div>
       {user
         ? user?.id === createdBy && (

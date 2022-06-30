@@ -35,6 +35,25 @@ const getMyPosts = async () => {
   return res.data;
 };
 
+const getPost = async (id) => {
+  const { data } = await API.get('/' + id);
+  return data;
+};
+
+const commentOnPost = async (id, text) => {
+  const { data } = await API.post('/comment/' + id, {
+    content: text,
+  });
+  return data;
+};
+
+const deleteCommentOnPost = async (postId, commentId) => {
+  const { data } = await API.post('/comment/delete/' + postId, {
+    id: commentId,
+  });
+  return data;
+};
+
 const getAllPosts = async () => {
   const res = await API.get('/all');
   return res.data;
@@ -47,11 +66,14 @@ const likePost = async (id) => {
 
 const postsService = {
   getMyPosts,
+  getPost,
   getAllPosts,
   deletePost,
   createPost,
   editPost,
   likePost,
+  commentOnPost,
+  deleteCommentOnPost,
 };
 
 export default postsService;

@@ -23,6 +23,13 @@ const PostsSchema = new mongoose.Schema(
       type: [String],
       default: [],
     },
+    comments: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Comment',
+        default: [],
+      },
+    ],
   },
   {
     timestamps: true,

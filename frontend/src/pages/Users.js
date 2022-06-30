@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAllUsers, reset } from '../features/users/usersSlice';
+import { getAllUsers } from '../features/users/usersSlice';
 import { toast } from 'react-toastify';
 import { Spinner, User, Sidebar } from '../components';
 import { useEffect } from 'react';
@@ -19,9 +19,9 @@ const Users = () => {
     else {
       dispatch(getAllUsers());
     }
-    return () => {
-      dispatch(reset());
-    };
+    // return () => {
+    //   dispatch(reset());
+    // };
   }, [navigate, isError, message, dispatch]);
 
   if (isLoading) {

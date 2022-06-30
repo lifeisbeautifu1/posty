@@ -55,27 +55,59 @@ const getAllUsers = async (req, res) => {
 const followUser = async (req, res) => {
   let user = await User.findById(req.params.id);
   if (!user)
-    throw new NotFoundError(`User with id ${req.body.id} doesn't exist!`);
+    throw new NotFoundError(`User with id ${req.params.id} doesn't exist!`);
   let follower = await User.findById(req.user.id);
   if (user.followers.includes(req.user.id)) {
-    user.followers = user.followers.filter((id) => {
-      return id !== req.user.id;
-    });
-    follower.following = follower.following.filter((id) => {
-      return id !== req.params.id;
-    });
+    user = await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        $pull: {
+          followers: req.user.id,
+        },
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    follower = await User.findByIdAndUpdate(
+      req.user.id,
+      {
+        $pull: {
+          following: req.params.id,
+        },
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
   } else {
-    user.followers.push(req.user.id);
-    follower.following.push(req.params.id);
+    user = await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        $push: {
+          followers: req.user.id,
+        },
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    follower = await User.findByIdAndUpdate(
+      req.user.id,
+      {
+        $push: {
+          following: req.params.id,
+        },
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
   }
-  user = await User.findByIdAndUpdate(user._id, user, {
-    runValidators: true,
-    new: true,
-  });
-  follower = await User.findByIdAndUpdate(follower._id, follower, {
-    runValidators: true,
-    new: true,
-  });
   return res.status(StatusCodes.OK).json({
     id: follower._id,
     name: follower.name,
@@ -84,7 +116,7 @@ const followUser = async (req, res) => {
     following: follower.following,
     followers: follower.followers,
   });
-  // res.status(StatusCodes.OK).json({ user, follower });
+
 };
 
 const getInformation = async (req, res) => {

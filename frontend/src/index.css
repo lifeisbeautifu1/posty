@@ -8,6 +8,9 @@
     /* --primary-color: #3b82f6; */
     --primary-color: #333;
     --secondary-color: #555;
+    --transition: all 0.3s ease;
+    --hover: translateY(-2px);
+    --shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap');
@@ -40,6 +43,10 @@ ul {
     list-style: none;
 }
 
+li {
+    cursor: pointer;
+}
+
 .container {
     width: 100%;
     max-width: 960px;
@@ -56,11 +63,13 @@ ul {
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15);
 }
 
+
+
 .navbar .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 0;
+    padding: 0.625rem 0;
 }
 
 .password-wrapper {
@@ -92,14 +101,16 @@ ul {
     gap: 1.25rem;
 }
 
-.navbar ul li a {
+.navbar ul li {
     cursor: pointer;
     display: flex;
     align-items: center;
+    transition: var(--transition);
 }
 
-.navbar ul li a:hover {
+.navbar ul li:hover {
     color: #666;
+    transform: var(--hover);
 }
 
 .navbar ul li a svg {
@@ -256,7 +267,7 @@ label {
     border: none;
     cursor: pointer;
     font-size: 1.125rem;
-    transition: all 0.3s ease;
+    transition: var(--transition);
 }
 
 
@@ -299,16 +310,18 @@ aside ul {
 }
 
 aside ul li a {
-    font-weight: 600;
+    font-weight: 900;
     text-align: left;
     font-size: 1.5rem;
     display: flex;
     gap: 0.5rem;
     align-items: center;
+    transition: var(--transition);
 }
 
 aside ul li a:hover {
     color: #666;
+    transform: var(--hover);
 }
 
 .posts-wrapper {
@@ -324,9 +337,26 @@ textarea.form-control {
     height: 200px;
 }
 
+input.form-control {
+    border-radius: 100px;
+}
+
+.comments .title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.comments {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+}
+
+
+
 
 .form-control {
-    padding: 0.625rem;
+    padding: 0.625rem 1rem;
     border: 1px solid #e6e6e6;
     border-radius: 0.3125rem;
     font-family: inherit;
@@ -348,13 +378,14 @@ textarea.form-control {
     justify-content: center;
     align-items: center;
     appearance: button;
-    transition: all 0.3s ease;
+    transition: var(--transition);
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
 }
 
 .btn:hover {
-    transform: scale(0.98);
+    transform: var(--hover);
 }
+
 
 .spinner-container {
     position: fixed;

@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import postsService from './postsService';
 
 const initialState = {
-  posts: [],
+  posts: null,
   allPosts: [],
   isError: false,
   isSuccess: false,
@@ -128,6 +128,9 @@ const postsSlice = createSlice({
     setIdToDelete: (state, action) => {
       state.idToDelete = action.payload;
     },
+    selectPost: (state, action) => {
+      state.selectedPost = action.payload;
+    },
   },
   extraReducers: {
     [likePost.pending]: (state, action) => {
@@ -161,29 +164,29 @@ const postsSlice = createSlice({
       state.message = action.payload;
     },
     [getMyPosts.pending]: (state, action) => {
-      state.isLoading = true;
+      // state.isLoading = true;
     },
     [getMyPosts.fulfilled]: (state, action) => {
-      state.isLoading = false;
-      state.isSuccess = true;
+      // state.isLoading = false;
+      // state.isSuccess = true;
       state.posts = action.payload;
     },
     [getMyPosts.rejected]: (state, action) => {
       state.isError = true;
-      state.isLoading = false;
+      // state.isLoading = false;
       state.message = action.payload;
     },
     [getAllPosts.pending]: (state, action) => {
-      state.isLoading = true;
+      // state.isLoading = true;
     },
     [getAllPosts.fulfilled]: (state, action) => {
-      state.isLoading = false;
-      state.isSuccess = true;
+      // state.isLoading = false;
+      // state.isSuccess = true;
       state.allPosts = action.payload;
     },
     [getAllPosts.rejected]: (state, action) => {
       state.isError = true;
-      state.isLoading = false;
+      // state.isLoading = false;
       state.message = action.payload;
     },
     [deletePost.pending]: (state, action) => {
@@ -230,6 +233,6 @@ const postsSlice = createSlice({
   },
 });
 
-export const { reset, openModal, closeModal, setIdToDelete } =
+export const { reset, openModal, closeModal, setIdToDelete, toggleLoading } =
   postsSlice.actions;
 export default postsSlice.reducer;

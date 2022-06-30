@@ -6,3 +6,4 @@ export { default as PostsForm } from './PostsForm';
 export { default as Sidebar } from './Sidebar';
 export { default as Spinner } from './Spinner';
 export { default as User } from './User';
+export { default as Comment } from './Comment';

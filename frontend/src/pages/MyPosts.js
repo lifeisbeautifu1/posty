@@ -1,9 +1,9 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Spinner, PostsForm, PostItem, Sidebar } from '../components';
-import { getMyPosts, reset } from '../features/posts/postsSlice';
-
+import { getMyPosts, getAllPosts } from '../features/posts/postsSlice';
+import { getAllUsers } from '../features/users/usersSlice';
 
 const MyPosts = () => {
   const navigate = useNavigate();
@@ -13,18 +13,29 @@ const MyPosts = () => {
     (state) => state.posts
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
+    if (user) {
+      dispatch(getAllPosts());
+      dispatch(getMyPosts());
+      dispatch(getAllUsers());
+    }
+  }, []);
+
+  useEffect(() => {
     if (isError) console.log(message);
     if (!user) navigate('/login');
     else {
       dispatch(getMyPosts());
     }
-    return () => {
-      dispatch(reset());
-    };
+    // return () => {
+    //   dispatch(reset());
+    // };
   }, [user, isError, message, navigate, dispatch]);
 
   if (isLoading) {
+    return <Spinner />;
+  }
+  if (posts === null) {
     return <Spinner />;
   }
   return (

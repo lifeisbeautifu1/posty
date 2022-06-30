@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+
 const UserSchema = new mongoose.Schema(
   {
     name: {
@@ -22,14 +23,20 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Please select profile image'],
     },
-    following: {
-      type: [String],
-      default: [],
-    },
-    followers: {
-      type: [String],
-      default: [],
-    },
+    following: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Users',
+        default: [],
+      },
+    ],
+    followers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Users',
+        default: [],
+      },
+    ],
   },
   {
     timestamps: true,

@@ -2,6 +2,7 @@ const { StatusCodes } = require('http-status-codes');
 const { BadRequestError, NotFoundError } = require('../errors');
 const Posts = require('../models/posts');
 const Users = require('../models/user');
+const Comment = require('../models/comment');
 
 const getPosts = async (req, res) => {
   const posts = await Posts.find({ createdBy: req.user.id }).sort('-createdAt');
@@ -9,7 +10,11 @@ const getPosts = async (req, res) => {
 };
 
 const getPost = async (req, res) => {
-  const post = await Posts.findById(req.params.id);
+  let post = await Posts.findById(req.params.id).populate('comments');
+  post = await Users.populate(post, {
+    path: 'comments.author',
+    select: 'name image',
+  });
   res.status(StatusCodes.OK).json(post);
 };
 
@@ -72,6 +77,57 @@ const likePost = async (req, res) => {
   res.status(StatusCodes.OK).json(posts);
 };
 
+const commentOnPost = async (req, res) => {
+  const { content } = req.body;
+  if (!content) {
+    throw new BadRequestError('Please provide comment');
+  }
+  const newComment = {
+    content,
+    author: req.user.id,
+  };
+  let comment = await Comment.create(newComment);
+  let post = await Posts.findByIdAndUpdate(
+    req.params.id,
+    {
+      $push: {
+        comments: comment,
+      },
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  ).populate('comments');
+
+  post = await Users.populate(post, {
+    path: 'comments.author',
+    select: 'name image',
+  });
+  return res.status(StatusCodes.CREATED).json(post);
+};
+
+const deleteCommentOnPost = async (req, res) => {
+  let comment = await Comment.findById(req.body.id);
+  let post = await Posts.findByIdAndUpdate(
+    req.params.id,
+    {
+      $pull: {
+        comments: comment._id,
+      },
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  ).populate('comments');
+  post = await Users.populate(post, {
+    path: 'comments.author',
+    select: 'name image',
+  });
+  return res.status(StatusCodes.OK).json(post);
+};
+
 module.exports = {
   getPosts,
   getAllPosts,
@@ -80,4 +136,6 @@ module.exports = {
   createPost,
   likePost,
   getPost,
+  commentOnPost,
+  deleteCommentOnPost,
 };
