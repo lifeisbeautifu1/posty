@@ -7,22 +7,17 @@ const PostsSchema = new mongoose.Schema(
       required: [true, 'Please provide text field'],
     },
     author: {
-      type: String,
-      required: [true, 'Please provide author of the post'],
-    },
-    createdBy: {
       type: mongoose.Schema.Types.ObjectId,
-      required: [true, 'Please provide user'],
+      required: [true, 'Please provide author of the post'],
       ref: 'Users',
     },
-    image: {
-      type: String,
-      required: [true, 'Please provide picture'],
-    },
-    likes: {
-      type: [String],
-      default: [],
-    },
+    likes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Users',
+        default: [],
+      },
+    ],
     comments: [
       {
         type: mongoose.Schema.Types.ObjectId,

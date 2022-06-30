@@ -4,13 +4,20 @@ const Posts = require('../models/posts');
 const Users = require('../models/user');
 const Comment = require('../models/comment');
 
+
 const getPosts = async (req, res) => {
-  const posts = await Posts.find({ createdBy: req.user.id }).sort('-createdAt');
+  const posts = await Posts.find({ author: req.user.id })
+    .populate('author', 'name image')
+    .sort('-createdAt');
   res.status(StatusCodes.OK).json(posts);
 };
 
 const getPost = async (req, res) => {
-  let post = await Posts.findById(req.params.id).populate('comments');
+  let post = await Posts.findById(req.params.id)
+    .populate('author', 'name image')
+    .populate('comments');
+  if (!post)
+    throw new BadRequestError('Post with id' + req.params.id + 'doesnt exist!');
   post = await Users.populate(post, {
     path: 'comments.author',
     select: 'name image',
@@ -19,41 +26,36 @@ const getPost = async (req, res) => {
 };
 
 const getAllPosts = async (req, res) => {
-  const posts = await Posts.find().sort('-createdAt');
+  const posts = await Posts.find()
+    .populate('author', 'name image')
+    .sort('-createdAt');
   res.status(StatusCodes.OK).json(posts);
 };
 
 const createPost = async (req, res) => {
   if (!req.body.text) throw new BadRequestError('Please provide text field!');
-  const user = await Users.findById(req.user.id);
-  const post = await Posts.create({
+  let post = await Posts.create({
     text: req.body.text,
-    author: req.user.name,
-    createdBy: req.user.id,
-    image: user.image,
+    author: req.user.id,
   });
+  post = await Posts.findById(post._id).populate('author', 'name image');
   res.status(StatusCodes.CREATED).json(post);
 };
 
 const updatePost = async (req, res) => {
   if (!req.body.text) throw new BadRequestError('Please provide text field!');
-  let post = await Posts.findOne({
-    _id: req.params.id,
-  });
-  if (!post)
-    throw new NotFoundError(`post with id ${req.params.id} doesnt exist`);
-  if (post.createdBy.toString() !== req.user.id)
-    throw new NotFoundError(`post with id ${req.params.id} doesnt exist`);
-  post = await Posts.findByIdAndUpdate(req.params.id, req.body, {
+  const post = await Posts.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
-  });
+  }).populate('author', 'name image');
+  if (!post)
+    throw new NotFoundError(`post with id ${req.params.id} doesnt exist`);
   res.status(StatusCodes.OK).json(post);
 };
 
 const deletePost = async (req, res) => {
   const post = await Posts.findOneAndDelete({
-    createdBy: req.user.id,
+    author: req.user.id,
     _id: req.params.id,
   });
   if (!post)
@@ -63,17 +65,38 @@ const deletePost = async (req, res) => {
 
 const likePost = async (req, res) => {
   let post = await Posts.findById(req.params.id);
-  if (!post) throw new NotFoundError(`Post with id ${postId} does not exist!`);
+  if (!post)
+    throw new NotFoundError(`Post with id ${req.params.id} does not exist!`);
   if (post.likes.includes(req.user.id)) {
-    post.likes = post.likes.filter((id) => id !== req.user.id);
+    post = await Posts.findByIdAndUpdate(
+      req.params.id,
+      {
+        $pull: {
+          likes: req.user.id,
+        },
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
   } else {
-    post.likes.push(req.user.id);
+    post = await Posts.findByIdAndUpdate(
+      req.params.id,
+      {
+        $push: {
+          likes: req.user.id,
+        },
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
   }
-  post = await Posts.findByIdAndUpdate(req.params.id, post, {
-    new: true,
-    runValidators: true,
-  });
-  const posts = await Posts.find().sort('-createdAt');
+  const posts = await Posts.find()
+    .populate('author', 'name image')
+    .sort('-createdAt');
   res.status(StatusCodes.OK).json(posts);
 };
 
@@ -98,7 +121,9 @@ const commentOnPost = async (req, res) => {
       new: true,
       runValidators: true,
     }
-  ).populate('comments');
+  )
+    .populate('author', 'name image')
+    .populate('comments');
 
   post = await Users.populate(post, {
     path: 'comments.author',
@@ -120,7 +145,9 @@ const deleteCommentOnPost = async (req, res) => {
       new: true,
       runValidators: true,
     }
-  ).populate('comments');
+  )
+    .populate('author', 'name image')
+    .populate('comments');
   post = await Users.populate(post, {
     path: 'comments.author',
     select: 'name image',

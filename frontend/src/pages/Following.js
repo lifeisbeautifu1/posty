@@ -27,7 +27,7 @@ const AllPosts = () => {
     return <Spinner />;
   }
   const followingPosts = allPosts?.filter((post) => {
-    return user.following.includes(post.createdBy);
+    return user.following.includes(post.author._id);
   });
   return (
     <div className="grid">

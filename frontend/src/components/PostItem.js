@@ -18,10 +18,8 @@ const PostItem = ({
   _id,
   text,
   createdAt,
-  author,
-  createdBy,
+  author: { name, image, _id: authorId },
   likes,
-  image,
   comments,
 }) => {
   const [isEdit, setIsEdit] = useState(false);
@@ -63,7 +61,7 @@ const PostItem = ({
         </div>
         <div className="post-desc">
           <div className="info">
-            <h1>{author}</h1>
+            <h1>{name}</h1>
             <span>{moment(createdAt).fromNow()}</span>
           </div>
           {isEdit ? (
@@ -113,7 +111,7 @@ const PostItem = ({
         {comments?.length ? comments?.length : 0}
       </div>
       {user
-        ? user?.id === createdBy && (
+        ? user?.id === authorId && (
             <div className="icons-container">
               <button className="icon" onClick={handleEdit}>
                 <FiEdit className="icon edit-icon" />
