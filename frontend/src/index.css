@@ -8,6 +8,7 @@
     /* --primary-color: #3b82f6; */
     --primary-color: #333;
     --secondary-color: #555;
+    --blue-color: #2481cc;
     --transition: all 0.3s ease;
     --hover: translateY(-2px);
     --blue-color: #60a5fa;
@@ -71,6 +72,26 @@ li {
     justify-content: space-between;
     align-items: center;
     padding: 0.625rem 0;
+}
+
+.profile-btn {
+    padding: 13px 24px;
+    background: var(--blue-color);
+    color: #fff;
+    text-transform: uppercase;
+    border-radius: 22px;
+    font-size: 0.875rem;
+    height: 42px;
+    cursor: pointer;
+    font-family: inherit;
+    border: none;
+    font-weight: bold;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    transition: var(--transition);
+}
+
+.profile-btn:hover {
+    opacity: 0.9;
 }
 
 .password-wrapper {
@@ -157,6 +178,10 @@ form,
     display: flex;
     flex-direction: column;
     gap: 1.25rem; /* 20px === 1.25rem === 16 * 1.25 */
+}
+
+.m-auto {
+    margin: auto;
 }
 
 
@@ -418,7 +443,7 @@ input.form-control {
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 1;
+    z-index: 1000;
     background: rgba(0, 0, 0, 0.3);
     display: flex;
     justify-content: center;
@@ -436,6 +461,32 @@ input.form-control {
     gap: 1.5rem;
     align-items: center;
     text-align: center;
+}
+
+.profile-modal {
+    background: #fff;
+    width: 400px;
+    padding: 2rem;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, .15);
+    border-radius: 0.3125rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    align-items: center;
+}
+
+.profile-modal p {
+    color: #7d7f81;
+    cursor: pointer;
+}
+
+.profile-modal p:hover {
+    text-decoration: underline;
+}
+
+.profile-modal h1 {
+    font-size: 1.5rem;
+    text-transform: capitalize;
 }
 
 .modal h1 {
@@ -474,6 +525,7 @@ input.form-control {
 }
 
 .users-list {
+    margin-top: 2rem;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -504,6 +556,16 @@ input.form-control {
     height: 100px;
     border-radius: 50%;
     object-fit: cover;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+}
+
+
+.profile-photo {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
 }
 
 .user .info {
@@ -563,6 +625,17 @@ input.form-control {
     padding: 1rem;
     background: #fff;
     gap: 1rem;
+}
+
+.user-search-input {
+    padding: 1rem 2rem;
+    font-size: 1.25rem;
+    color: #555;
+}
+
+
+.shadow {
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15);
 }
 
 .pagination > div {

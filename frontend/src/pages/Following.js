@@ -22,9 +22,6 @@ const AllPosts = () => {
     else {
       dispatch(getFollowingPosts(page));
     }
-    // return () => {
-    //   dispatch(reset());
-    // };
   }, [user, isError, message, navigate, dispatch, page]);
 
   if (isLoading) {
@@ -46,7 +43,7 @@ const AllPosts = () => {
             <h3>Feed is empty</h3>
           )}
         </section>
-        <Pagination path="/following" />
+        {followingPosts.length ? <Pagination path="/following" /> : null}
       </article>
     </div>
   );

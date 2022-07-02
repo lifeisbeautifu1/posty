@@ -110,6 +110,7 @@ export const authSlice = createSlice({
     [followUser.fulfilled]: (state, action) => {
       // state.isLoading = true;
       // state.isSuccess = true;
+      state.isError = false;
       state.user.following = action.payload?.following;
     },
     [followUser.rejected]: (state) => {

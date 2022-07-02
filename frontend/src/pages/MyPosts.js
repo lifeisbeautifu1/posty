@@ -8,8 +8,7 @@ import {
   Sidebar,
   Pagination,
 } from '../components';
-import { getMyPosts, getAllPosts } from '../features/posts/postsSlice';
-import { getAllUsers } from '../features/users/usersSlice';
+import { getMyPosts } from '../features/posts/postsSlice';
 import { useQuery } from '../config/utils';
 
 const MyPosts = () => {
@@ -25,9 +24,7 @@ const MyPosts = () => {
 
   useEffect(() => {
     if (user) {
-      dispatch(getAllPosts(page));
       dispatch(getMyPosts(page));
-      dispatch(getAllUsers());
     }
   }, []);
 

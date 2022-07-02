@@ -15,8 +15,8 @@ API.interceptors.request.use((req) => {
   return req;
 });
 
-const getAllUsers = async () => {
-  const res = await API.get('/');
+const getAllUsers = async (searchTerm) => {
+  const res = await API.get('/?search=' + searchTerm);
   return res.data;
 };
 

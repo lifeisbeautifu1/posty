@@ -21,14 +21,8 @@ const AllPosts = () => {
     else {
       dispatch(getAllPosts(page));
     }
-    // return () => {
-    //   dispatch(reset());
-    // };
   }, [user, isError, message, navigate, dispatch, page]);
 
-  if (isLoading) {
-    return <Spinner />;
-  }
   return (
     <div className="grid">
       <Sidebar />
@@ -43,7 +37,7 @@ const AllPosts = () => {
             <h3>Feed is empty</h3>
           )}
         </section>
-        <Pagination path="/all" />
+        {allPosts.length ? <Pagination path="/all" /> : null}
       </article>
     </div>
   );

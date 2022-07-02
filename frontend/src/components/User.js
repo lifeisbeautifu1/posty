@@ -1,7 +1,19 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { followUser } from '../features/auth/authSlice';
-const User = ({ _id, name, email, followers, image }) => {
+import {
+  setSelectedUser,
+  toggleProfileModal,
+} from '../features/users/usersSlice';
+
+const User = ({
+  _id,
+  name,
+  email,
+  followers,
+  image,
+  following: followingList,
+}) => {
   const { user } = useSelector((state) => state.auth);
   const [following, setFollowing] = useState(user?.following);
   const [stateFollowers, setStateFollowers] = useState(followers);
@@ -34,7 +46,24 @@ const User = ({ _id, name, email, followers, image }) => {
             ? 'Unfollow'
             : 'Follow'}
         </button>
-        <button className="btn">profile</button>
+        <button
+          className="btn"
+          onClick={() => {
+            dispatch(
+              setSelectedUser({
+                id: _id,
+                name,
+                image,
+                email,
+                followers,
+                following: followingList,
+              })
+            );
+            dispatch(toggleProfileModal());
+          }}
+        >
+          profile
+        </button>
       </div>
     </section>
   );

@@ -46,9 +46,21 @@ const login = async (req, res) => {
 };
 
 const getAllUsers = async (req, res) => {
-  const allUsers = await User.find().select(
-    '_id name email following followers image'
-  );
+  const keyword = req.query.search
+    ? {
+        $or: [
+          { name: { $regex: req.query.search, $options: 'i' } },
+          { email: { $regex: req.query.search, $options: 'i' } },
+        ],
+      }
+    : {};
+  const allUsers = await User.find(keyword)
+    .find({
+      _id: {
+        $ne: req.user.id,
+      },
+    })
+    .select('_id name email following followers image');
   res.status(StatusCodes.OK).json(allUsers);
 };
 

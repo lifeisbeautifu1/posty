@@ -1,8 +1,11 @@
 import React from 'react';
-// import { FaSignInAlt, FaSignOutAlt, FaUser } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout, reset } from '../features/auth/authSlice';
+import {
+  setSelectedUser,
+  toggleProfileModal,
+} from '../features/users/usersSlice';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -22,7 +25,14 @@ const Navbar = () => {
         <ul>
           {user ? (
             <>
-              <li>Profile</li>
+              <li
+                onClick={() => {
+                  dispatch(setSelectedUser(user));
+                  dispatch(toggleProfileModal());
+                }}
+              >
+                Profile
+              </li>
               <li>
                 <Link to="/" onClick={onLogout}>
                   Logout

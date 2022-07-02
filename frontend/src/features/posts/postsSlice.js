@@ -157,11 +157,12 @@ const postsSlice = createSlice({
     [likePost.fulfilled]: (state, action) => {
       // state.isSuccess = true;
       // state.isLoading = false;
+      state.isError = false;
       state.allPosts = action.payload;
-      const id = state.posts.length > 0 ? state.posts[0].createdBy : '';
-      state.posts = action.payload.filter((post) => {
-        return post.createdBy === id;
-      });
+      // const id = state.posts?.length > 0 ? state.posts[0].createdBy : '';
+      // state.posts = action.payload.filter((post) => {
+      //   return post.createdBy === id;
+      // });
     },
     [likePost.rejected]: (state, action) => {
       state.isError = true;
@@ -172,6 +173,7 @@ const postsSlice = createSlice({
       // state.isLoading = true;
     },
     [createPost.fulfilled]: (state, action) => {
+      state.isError = false;
       // state.isLoading = false;
       // state.isSuccess = true;
       state.posts.unshift(action.payload);
@@ -185,10 +187,11 @@ const postsSlice = createSlice({
       // state.isLoading = true;
     },
     [getMyPosts.fulfilled]: (state, action) => {
+      state.isError = false;
       // state.isLoading = false;
       // state.isSuccess = true;
-      console.log(action.payload);
       state.posts = action.payload.posts;
+      console.log(action.payload.numberOfPages);
       state.numberOfPages = action.payload.numberOfPages;
     },
     [getMyPosts.rejected]: (state, action) => {
@@ -197,23 +200,26 @@ const postsSlice = createSlice({
       state.message = action.payload;
     },
     [getAllPosts.pending]: (state, action) => {
-      // state.isLoading = true;
+      state.isLoading = true;
     },
     [getAllPosts.fulfilled]: (state, action) => {
-      // state.isLoading = false;
+      state.isError = false;
+      state.isLoading = false;
       // state.isSuccess = true;
       state.numberOfPages = action.payload.numberOfPages;
+      console.log(action.payload.numberOfPages);
       state.allPosts = action.payload.posts;
     },
     [getAllPosts.rejected]: (state, action) => {
       state.isError = true;
-      // state.isLoading = false;
+      state.isLoading = false;
       state.message = action.payload;
     },
     [getFollowingPosts.pending]: (state, action) => {
       // state.isLoading = true;
     },
     [getFollowingPosts.fulfilled]: (state, action) => {
+      state.isError = false;
       // state.isLoading = false;
       // state.isSuccess = true;
       state.numberOfPages = action.payload.numberOfPages;
@@ -228,6 +234,7 @@ const postsSlice = createSlice({
       // state.isLoading = true;
     },
     [deletePost.fulfilled]: (state, action) => {
+      state.isError = false;
       // state.isLoading = false;
       // state.isSuccess = true;
       state.posts = state.posts.filter(
@@ -243,6 +250,7 @@ const postsSlice = createSlice({
       // state.isLoading = true;
     },
     [editPost.fulfilled]: (state, action) => {
+      state.isError = false;
       // state.isLoading = false;
       // state.isSuccess = true;
       state.posts = state.posts.map((post) => {
