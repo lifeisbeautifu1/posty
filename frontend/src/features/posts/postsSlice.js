@@ -238,7 +238,7 @@ const postsSlice = createSlice({
       state.isError = false;
       state.isLoading = false;
       // state.isSuccess = true;
-      state.numberOfPages = action.payload.numberOfPages;
+        state.numberOfPages = action.payload.numberOfPages;
       state.allPosts = [...state.allPosts, ...action.payload.posts];
       // state.allPosts = action.payload.posts;
     },
