@@ -52,13 +52,14 @@ li {
 .container {
     width: 100%;
     max-width: 960px;
-    overflow: scroll;
+    overflow: hidden;
     margin: 0 auto;
     text-align: center; 
     padding-bottom: 5rem;
     display: flex;
     justify-content: center;
 }
+
 
 .navbar {
     font-weight: 600;
@@ -69,6 +70,7 @@ li {
 
 .navbar .container {
     display: flex;
+    height: auto;
     justify-content: space-between;
     align-items: center;
     padding: 0.625rem 0;
@@ -180,8 +182,10 @@ form,
     gap: 1.25rem; /* 20px === 1.25rem === 16 * 1.25 */
 }
 
+
+
 .m-auto {
-    margin: auto;
+    margin: 3rem auto;
 }
 
 
@@ -316,10 +320,14 @@ label {
 }
 
 .grid {
-    display: grid;
     width: 100%;
-    grid-template-columns: 30% 70%;
+    display: grid;
+    grid-template-columns: 30% 70%; 
 }
+
+/* .grid::-webkit-scrollbar {
+    display: none;
+} */
 
 aside {
     display: flex;
@@ -351,8 +359,16 @@ aside ul li a:hover {
 }
 
 .posts-wrapper {
-    padding-top: 2.5rem;
+    width: 100%;
+    padding: 2.5rem 0;
+}
 
+/* .posts-wrapper::-webkit-scrollbar {
+    display: none;
+} */
+
+.load-more-btn {
+    margin: 1.25rem auto;
 }
 
 textarea.form-control {

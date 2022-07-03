@@ -47,6 +47,24 @@ export const getAllPosts = createAsyncThunk(
     }
   }
 );
+
+export const loadMore = createAsyncThunk(
+  'posts/loadMore',
+  async (page, thunkAPI) => {
+    try {
+      return await postsService.getAllPosts(page);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const getFollowingPosts = createAsyncThunk(
   'posts/getFollowingPosts',
   async (page, thunkAPI) => {
@@ -191,7 +209,6 @@ const postsSlice = createSlice({
       // state.isLoading = false;
       // state.isSuccess = true;
       state.posts = action.payload.posts;
-      console.log(action.payload.numberOfPages);
       state.numberOfPages = action.payload.numberOfPages;
     },
     [getMyPosts.rejected]: (state, action) => {
@@ -207,10 +224,25 @@ const postsSlice = createSlice({
       state.isLoading = false;
       // state.isSuccess = true;
       state.numberOfPages = action.payload.numberOfPages;
-      console.log(action.payload.numberOfPages);
       state.allPosts = action.payload.posts;
     },
     [getAllPosts.rejected]: (state, action) => {
+      state.isError = true;
+      state.isLoading = false;
+      state.message = action.payload;
+    },
+    [loadMore.pending]: (state, action) => {
+      state.isLoading = true;
+    },
+    [loadMore.fulfilled]: (state, action) => {
+      state.isError = false;
+      state.isLoading = false;
+      // state.isSuccess = true;
+      state.numberOfPages = action.payload.numberOfPages;
+      state.allPosts = [...state.allPosts, ...action.payload.posts];
+      // state.allPosts = action.payload.posts;
+    },
+    [loadMore.rejected]: (state, action) => {
       state.isError = true;
       state.isLoading = false;
       state.message = action.payload;

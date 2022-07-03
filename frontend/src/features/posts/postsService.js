@@ -54,7 +54,9 @@ const deleteCommentOnPost = async (postId, commentId) => {
 };
 
 const getAllPosts = async (page) => {
+  console.log(page);
   const res = await API.get('/all?page=' + page);
+  console.log(res.data);
   return res.data;
 };
 
