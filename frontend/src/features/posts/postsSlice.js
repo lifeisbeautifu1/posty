@@ -158,7 +158,7 @@ const postsSlice = createSlice({
       // state.isSuccess = true;
       // state.isLoading = false;
       state.isError = false;
-      state.allPosts = action.payload;
+      // state.allPosts = action.payload;
       // const id = state.posts?.length > 0 ? state.posts[0].createdBy : '';
       // state.posts = action.payload.filter((post) => {
       //   return post.createdBy === id;

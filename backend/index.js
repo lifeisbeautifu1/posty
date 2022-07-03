@@ -12,6 +12,8 @@ require('dotenv').config();
 
 const posts = require('./routes/posts');
 const users = require('./routes/users');
+const message = require('./routes/message');
+const chat = require('./routes/chat');
 
 const app = express();
 
@@ -24,6 +26,8 @@ app.use(express.urlencoded({ extended: false, limit: '30mb' }));
 
 app.use('/api/posts', auth, posts);
 app.use('/api/users', users);
+app.use('/api/message', auth, message);
+app.use('/api/chat', auth, chat);
 app.use(errorHandler);
 app.use(notFound);
 

@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAllUsers } from '../features/users/usersSlice';
+import { getAllUsers, reset } from '../features/users/usersSlice';
 import { toast } from 'react-toastify';
 import { User, Sidebar } from '../components';
 import { useEffect, useState } from 'react';
@@ -18,6 +18,7 @@ const Users = () => {
   useEffect(() => {
     if (isError) toast.error(message);
     if (!user) navigate('/login');
+    return () => dispatch(reset());
   }, [navigate, isError, message]);
 
   const handleSubmit = (e) => {
