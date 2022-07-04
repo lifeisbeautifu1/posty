@@ -1,7 +1,7 @@
-import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleProfileModal } from '../features/users/usersSlice';
 import { useRef, useEffect } from 'react';
+import { accessChat, toggleChatModal } from '../features/chat/chatSlice';
 
 const ProfileModal = () => {
   const dispatch = useDispatch();
@@ -33,7 +33,16 @@ const ProfileModal = () => {
         <p>Subscribers: {selectedUser?.followers?.length}</p>
         <p>Following: {selectedUser?.following?.length}</p>
         {selectedUser?.id !== user.id && (
-          <button className="profile-btn">Message</button>
+          <button
+            className="profile-btn"
+            onClick={() => {
+              dispatch(accessChat(selectedUser.id));
+              dispatch(toggleProfileModal());
+              dispatch(toggleChatModal());
+            }}
+          >
+            Message
+          </button>
         )}
       </div>
     </div>

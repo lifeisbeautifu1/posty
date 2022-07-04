@@ -3,7 +3,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from 'react-redux';
 
-import { Navbar, Modal, ProfileModal } from './components';
+import { Navbar, Modal, ProfileModal, Chat } from './components';
 
 import {
   Following,
@@ -18,11 +18,13 @@ import {
 const App = () => {
   const { isModalOpen } = useSelector((state) => state.posts);
   const { isProfileModal } = useSelector((state) => state.users);
+  const { isChatModal } = useSelector((state) => state.chat);
   return (
     <BrowserRouter>
       <Navbar />
       {isModalOpen && <Modal />}
       {isProfileModal && <ProfileModal />}
+      {isChatModal && <Chat />}
       <div className="container">
         <Routes>
           <Route path="/">

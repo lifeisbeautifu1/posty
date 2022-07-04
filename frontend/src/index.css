@@ -369,9 +369,55 @@ aside ul li a:hover {
     padding: 2.5rem 0;
 }
 
-/* .posts-wrapper::-webkit-scrollbar {
-    display: none;
-} */
+
+.chat-modal form {
+    margin-top: .625rem;
+}
+
+
+.message-container {
+    height: 90%;
+    width: 100%;
+    overflow: scroll;
+    padding: 0.625rem;
+    background: #f4f4f4;
+    border-radius: 0.3125rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3125rem;
+}
+
+
+
+.our {
+    justify-content: flex-end
+}
+
+.message {
+    display: flex;
+    align-items: center;
+    gap: 0.3125rem;
+}
+
+.message img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.message .msg-content {
+    padding: 0.3125rem 0.625rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--blue-color);
+    border-radius: 25px;
+    color: white;
+}
+
+.w-full {
+    width: 100%;
+}
 
 .load-more-btn {
     margin: 1.25rem auto;
@@ -488,6 +534,19 @@ input.form-control {
 .profile-modal {
     background: #fff;
     width: 400px;
+    padding: 2rem;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, .15);
+    border-radius: 0.3125rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    align-items: center;
+}
+
+.chat-modal {
+    background: #fff;
+    height: 600px;
+    width: 600px;
     padding: 2rem;
     box-shadow: 0 3px 5px rgba(0, 0, 0, .15);
     border-radius: 0.3125rem;
@@ -623,10 +682,17 @@ input.form-control {
     text-transform: capitalize;
 }
 
+.margin-left {
+    margin-left: 55px;
+}
+
+.margin-right {
+    margin-right: 55px;
+}
+
 .register,
 .login {
-    align-self: center;
-    height: 100%;
+    align-self: flex-start;
     width: 50%;
     display: flex;
     flex-direction: column;
