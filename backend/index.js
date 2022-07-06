@@ -10,6 +10,8 @@ require('colors');
 const cors = require('cors');
 require('dotenv').config();
 
+const { Server } = require('socket.io');
+
 const posts = require('./routes/posts');
 const users = require('./routes/users');
 const message = require('./routes/message');
@@ -33,11 +35,41 @@ app.use(notFound);
 
 const PORT = process.env.PORT || 5000;
 
+let server;
+let io;
+
 const start = async () => {
   try {
     await connectDB(process.env.MONGO_URI);
-    app.listen(PORT, () => {
+    server = app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`.yellow.bold);
+    });
+    io = new Server(server, {
+      cors: {
+        origin: '*',
+      },
+    });
+    io.on('connection', (socket) => {
+      socket.on('setup', (userData) => {
+        socket.join(userData.id);
+        socket.emit('connected');
+      });
+      socket.on('joinChat', (room) => {
+        socket.join(room);
+        // console.log('User joined room ' + room);
+      });
+      socket.on('newMessage', (id) => {
+        // const chat = newMessageReceived.chat;
+        // if (!chat.users) return;
+        // chat.users.forEach((user) => {
+        //   if (user._id === newMessageReceived.sender._id) return;
+        //   socket.in(user._id).emit('messageReceived', newMessageReceived);
+        // });
+        socket.in(id).emit('messageReceived');
+      });
+      socket.off('setup', () => {
+        socket.leave(userData.id);
+      });
     });
   } catch (error) {
     console.log(error);
@@ -46,3 +78,5 @@ const start = async () => {
 };
 
 start();
+
+

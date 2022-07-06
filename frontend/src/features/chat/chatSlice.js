@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import chatService from './chatService';
 import messageService from './messageService';
 
+
 const initialState = {
   selectedChat: null,
   isChatModal: false,

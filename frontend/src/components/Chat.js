@@ -4,8 +4,11 @@ import {
   toggleChatModal,
   getAllMessages,
   sendMessage,
+  init,
 } from '../features/chat/chatSlice';
 import { showAvatar } from '../config/utils';
+import { io } from 'socket.io-client';
+let socket;
 
 const Chat = () => {
   const dispatch = useDispatch();
@@ -18,11 +21,18 @@ const Chat = () => {
       dispatch(toggleChatModal());
     }
   };
-
+  const [socketConnected, setSocketConnected] = useState(false);
   const [message, setMessage] = useState('');
+  const { selectedUser } = useSelector((state) => state.users);
   const { user } = useSelector((state) => state.auth);
+  const [fetchAgain, setFetchAgain] = useState(false);
   const { selectedChat, messages } = useSelector((state) => state.chat);
   useEffect(() => {
+    socket = io(process.env.REACT_APP_BASE_URL);
+    socket.emit('setup', user);
+    socket.on('connected', () => {
+      setSocketConnected(true);
+    });
     window.addEventListener('click', toggleModalContainer);
     return () => window.removeEventListener('click', toggleModalContainer);
   }, []);
@@ -33,12 +43,27 @@ const Chat = () => {
       messagesContainer.current.scrollTop =
         messagesContainer.current.scrollHeight;
     }
+  }, [fetchAgain]);
+
+  useEffect(() => {
+    if (selectedChat?._id) {
+      dispatch(getAllMessages(selectedChat?._id));
+      messagesContainer.current.scrollTop =
+        messagesContainer.current.scrollHeight;
+      socket.emit('joinChat', selectedChat._id);
+    }
   }, [selectedChat]);
 
   useEffect(() => {
     messagesContainer.current.scrollTop =
       messagesContainer.current.scrollHeight;
   }, [messages]);
+
+  useEffect(() => {
+    socket.on('messageReceived', () => {
+      setFetchAgain(!fetchAgain);
+    });
+  });
 
   return (
     <div ref={modalContainer} className="modal-container">
@@ -65,7 +90,7 @@ const Chat = () => {
         </div>
 
         <form
-          onSubmit={(e) => {
+          onSubmit={async (e) => {
             e.preventDefault();
             dispatch(
               sendMessage({
@@ -73,6 +98,7 @@ const Chat = () => {
                 chatId: selectedChat?._id,
               })
             );
+            socket.emit('newMessage', selectedUser.id);
             setMessage('');
           }}
           className="w-full"
